@@ -16,6 +16,8 @@ Conforme definido na exploração, a aplicação Next.js existente no monorepo s
 - Validar estritamente o payload recebido via `@Body()` garantindo que campos inválidos ou ausentes retornem HTTP `400 Bad Request`.
 - Implementar formulário de submissão de palestras no Next.js (`frontend`) em conformidade com WAI-ARIA e consumindo o contrato `SpeakerDTO`.
 - Gerenciar o estado do formulário de forma reativa, mantendo o botão de envio bloqueado no estado inicial e durante a submissão.
+- Limpar a página inicial do frontend (`frontend/src/app/page.tsx`), removendo toda a estrutura demonstrativa antiga do Nx e mantendo exclusivamente a interface focada no formulário de CFP.
+- Configurar o frontend para consumir a rota do backend na porta 3300 (`http://localhost:3300/api/cfp`) e habilitar CORS no NestJS.
 - Criar suíte de testes unitários no NestJS validando rejeição de payloads inválidos com status 400.
 - Criar suíte de testes unitários no Frontend validando estado inicial e bloqueio do botão de envio.
 
@@ -51,7 +53,18 @@ Conforme definido na exploração, a aplicação Next.js existente no monorepo s
 - **Backend (`api`)**: Testes unitários com Vitest instanciando o controller/service e validando a rejeição de instâncias de DTO inválidas com mensagens de erro correspondentes e código 400.
 - **Frontend (`frontend`)**: Testes unitários com Vitest e `@testing-library/react` validando a renderização do formulário, o estado inicial (com botão desabilitado), validação dos campos após entrada e bloqueio durante submissão.
 
+### Decisão 5: Remoção do Template Nx Legado no Frontend
+- **Escolha**: Substituir a estrutura demonstrativa legada do Nx em `frontend/src/app/page.tsx` (removendo seções de boas-vindas, SVGs e links de tutoriais do Nx) por um layout minimalista e elegante centrado no formulário de CFP (`<CfpForm />`).
+- **Alternativas consideradas**: Manter a estrutura do Nx e apenas inserir o formulário no topo. A remoção completa foi adotada conforme requisito explícito para entregar um produto final limpo, profissional e desprovido de código residual de scaffolding.
+
+### Decisão 6: Integração com a Rota do Backend na Porta 3300 e CORS
+- **Escolha**:
+  - Configurar `CFP_API_ENDPOINT` em `frontend/src/app/services/cfp-api.ts` apontando para `process.env.NEXT_PUBLIC_CFP_API_URL || 'http://localhost:3300/api/cfp'`, permitindo consumo direto do backend NestJS que executa na porta 3300.
+  - Habilitar CORS no backend através de `app.enableCors()` em `api/src/main.ts` para permitir requisições originadas do host local do frontend sem bloqueios do navegador.
+- **Alternativas consideradas**: Utilizar rewrites no `next.config.js`. A configuração explícita de endpoint com suporte a env var e habilitação de CORS no NestJS foi selecionada por garantir clareza arquitetural e facilidade na execução do monorepo tanto em desenvolvimento quanto em testes locais.
+
 ## Risks / Trade-offs
 
 - **[Dependências class-validator e class-transformer]** → Devem ser adicionadas ao `package.json` para que o NestJS execute a validação em runtime.
 - **[Interface TypeScript vs Classes em Runtime]** → A interface `SpeakerDTO` em `shared-types` é puramente estrutural em TypeScript (apagada em tempo de compilação). O backend implementará a interface através da classe `CreateSpeakerDto`, garantindo conformidade de tipo e anotações para runtime.
+- **[Bloqueio de CORS em Navegadores]** → Frontend e Backend rodam em portas distintas em desenvolvimento local (ex: 4200/3000 e 3300). A chamada para `app.enableCors()` no NestJS é mandatória para evitar falhas de rede no envio do formulário.
