@@ -2,15 +2,15 @@
 
 ## 1. Dependências e Preparação do Backend
 
-- [ ] 1.1 Adicionar dependências `class-validator` e `class-transformer` e verificar a resolução no workspace através de `npm ls class-validator class-transformer`.
-- [ ] 1.2 Configurar `ValidationPipe` global ou escopado no NestJS (`api`) com opções de validação estrita (`whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`).
+- [x] 1.1 Adicionar dependências `class-validator` e `class-transformer` e verificar a resolução no workspace através de `npm ls class-validator class-transformer`.
+- [x] 1.2 Configurar `ValidationPipe` global ou escopado no NestJS (`api`) com opções de validação estrita (`whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`).
 
 ## 2. Implementação do Backend (NestJS em `api`) e Testes de Validação
 
-- [ ] 2.1 Criar a classe `CreateSpeakerDto` em `api/src/app/cfp/dto/create-speaker.dto.ts` implementando o contrato `SpeakerDTO` de `@cfp-platform/shared-types` com decorators de validação (`@IsNotEmpty`, `@IsEmail`, `@IsString`, `@IsBoolean`).
-- [ ] 2.2 Implementar o serviço `CfpService` e o controlador `CfpController` em `api/src/app/cfp/` com endpoint `POST` (`/api/cfp` ou `/api/speakers`) recebendo `@Body() dto: CreateSpeakerDto` e retornando status `201 Created`.
-- [ ] 2.3 Implementar testes unitários para o `CfpController` e validação do DTO garantindo que payloads válidos sejam aceitos e payloads inválidos (campos ausentes ou tipos incorretos) disparem `400 Bad Request`.
-- [ ] 2.4 Executar e validar a suíte de testes unitários do backend através de `npx nx test api`.
+- [x] 2.1 Criar a classe `CreateSpeakerDto` em `api/src/app/cfp/dto/create-speaker.dto.ts` implementando o contrato `SpeakerDTO` de `@cfp-platform/shared-types` com decorators de validação (`@IsNotEmpty`, `@IsEmail`, `@IsString`, `@IsBoolean`).
+- [x] 2.2 Implementar o serviço `CfpService` e o controlador `CfpController` em `api/src/app/cfp/` com endpoint `POST` (`/api/cfp` ou `/api/speakers`) recebendo `@Body() dto: CreateSpeakerDto` e retornando status `201 Created`.
+- [x] 2.3 Implementar testes unitários para o `CfpController` e validação do DTO garantindo que payloads válidos sejam aceitos e payloads inválidos (campos ausentes ou tipos incorretos) disparem `400 Bad Request`.
+- [x] 2.4 Executar e validar a suíte de testes unitários do backend através de `npx nx test api`.
 
 ## 3. Implementação do Formulário no Frontend (Next.js em `frontend`) e Acessibilidade
 
