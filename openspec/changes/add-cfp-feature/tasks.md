@@ -14,15 +14,15 @@
 
 ## 3. Implementação do Formulário no Frontend (Next.js em `frontend`) e Acessibilidade
 
-- [ ] 3.1 Implementar a gestão de estado reativa do formulário de submissão consumindo o contrato `SpeakerDTO`, controlando o estado inicial, validação dos campos e bloqueio de envio.
-- [ ] 3.2 Desenvolver o componente de formulário de submissão (`CfpForm`) com acessibilidade WAI-ARIA (`htmlFor`/`id`, `aria-required`, `aria-invalid`, `aria-describedby` para erros e `aria-busy` no carregamento).
-- [ ] 3.3 Integrar o componente de formulário na aplicação Next.js com conexão HTTP para a rota de submissão da API e feedback visual de envio.
+- [x] 3.1 Implementar a gestão de estado reativa do formulário de submissão consumindo o contrato `SpeakerDTO`, controlando o estado inicial, validação dos campos e bloqueio de envio.
+- [x] 3.2 Desenvolver o componente de formulário de submissão (`CfpForm`) com acessibilidade WAI-ARIA (`htmlFor`/`id`, `aria-required`, `aria-invalid`, `aria-describedby` para erros e `aria-busy` no carregamento).
+- [x] 3.3 Integrar o componente de formulário na aplicação Next.js com conexão HTTP para a rota de submissão da API e feedback visual de envio.
 
 ## 4. Testes Unitários do Frontend
 
-- [ ] 4.1 Criar testes unitários para o formulário no Frontend validando o estado inicial limpo e confirmando que o botão de submissão permanece bloqueado/desabilitado.
-- [ ] 4.2 Criar testes unitários validando a liberação do botão após preenchimento válido e o bloqueio durante o processo de submissão.
-- [ ] 4.3 Executar e validar os testes unitários do frontend através de `npx nx test frontend`.
+- [x] 4.1 Criar testes unitários para o formulário no Frontend validando o estado inicial limpo e confirmando que o botão de submissão permanece bloqueado/desabilitado.
+- [x] 4.2 Criar testes unitários validando a liberação do botão após preenchimento válido e o bloqueio durante o processo de submissão.
+- [x] 4.3 Executar e validar os testes unitários do frontend através de `npx nx test frontend`.
 
 ## 5. Verificação do Monorepo
 

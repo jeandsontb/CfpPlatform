@@ -1,6 +1,7 @@
 /* oxlint-disable jsx-a11y/prefer-tag-over-role -- the icons below
    are inline SVGs, which have no tag to swap the role for. */
 import styles from './page.module.css';
+import { CfpForm } from './components/cfp-form';
 
 export default function Index() {
   /*
@@ -51,6 +52,10 @@ export default function Index() {
             </svg>
           </div>
         </div>
+
+        <section id="cfp-section" style={{ marginTop: '3.5rem' }}>
+          <CfpForm />
+        </section>
 
         <div id="middle-content">
           <div id="learning-materials" className="rounded shadow">
