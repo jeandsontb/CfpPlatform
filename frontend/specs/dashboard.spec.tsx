@@ -16,12 +16,20 @@ describe('DashboardPage', () => {
     expect(screen.getByText(/acompanhe em tempo real todas as propostas/i)).toBeDefined();
   });
 
-  it('should render navigation link returning to the form (/)', () => {
+  it('should render exact navigation links in navbar', () => {
     render(<DashboardPage />);
 
-    const backLink = screen.getByRole('link', { name: /voltar ao formulário/i });
-    expect(backLink).toBeDefined();
-    expect(backLink.getAttribute('href')).toBe('/');
+    const eventLink = screen.getByRole('link', { name: /cadastro de evento/i });
+    expect(eventLink).toBeDefined();
+    expect(eventLink.getAttribute('href')).toBe('/event/new');
+
+    const talkLink = screen.getByRole('link', { name: /cadastro de palestra/i });
+    expect(talkLink).toBeDefined();
+    expect(talkLink.getAttribute('href')).toBe('/talks/new');
+
+    const dashboardLink = screen.getByRole('link', { name: /dashboard/i });
+    expect(dashboardLink).toBeDefined();
+    expect(dashboardLink.getAttribute('href')).toBe('/dashboard');
   });
 
   it('should render the CfpDashboard component', () => {

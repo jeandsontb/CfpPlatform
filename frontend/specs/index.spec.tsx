@@ -25,10 +25,18 @@ describe('Page', () => {
     expect(screen.getByLabelText(/título da palestra/i)).toBeDefined();
   });
 
-  it('should render navigation link to dashboard', () => {
+  it('should render exact navigation links: Cadastro de Evento, Cadastro de Palestra, Dashboard', () => {
     render(<Page />);
 
-    const dashboardLink = screen.getByRole('link', { name: /ver palestras submetidas/i });
+    const eventLink = screen.getByRole('link', { name: /cadastro de evento/i });
+    expect(eventLink).toBeDefined();
+    expect(eventLink.getAttribute('href')).toBe('/event/new');
+
+    const talkLink = screen.getByRole('link', { name: /cadastro de palestra/i });
+    expect(talkLink).toBeDefined();
+    expect(talkLink.getAttribute('href')).toBe('/talks/new');
+
+    const dashboardLink = screen.getByRole('link', { name: /dashboard/i });
     expect(dashboardLink).toBeDefined();
     expect(dashboardLink.getAttribute('href')).toBe('/dashboard');
   });
@@ -41,4 +49,3 @@ describe('Page', () => {
     expect(screen.queryByText(/you're up and running/i)).toBeNull();
   });
 });
-

@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import styles from '../page.module.css';
 import { CfpDashboard } from '../components/cfp-dashboard';
+import { Navbar } from '../components/navbar';
 
 export const metadata = {
   title: 'Dashboard de Palestras | CFP Platform',
@@ -11,11 +11,7 @@ export default function DashboardPage() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
-        <nav aria-label="Navegação superior" className={styles.navBar}>
-          <Link href="/" className={styles.navLink}>
-            ← Voltar ao Formulário
-          </Link>
-        </nav>
+        <Navbar currentPath="/dashboard" />
 
         <header className={styles.header}>
           <span className={styles.badge}>Painel de Controle</span>
