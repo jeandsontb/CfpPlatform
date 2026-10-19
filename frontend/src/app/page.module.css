@@ -17,6 +17,33 @@
   gap: 2rem;
 }
 
+.navBar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.navLink:hover {
+  color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .header {
   text-align: center;
 }

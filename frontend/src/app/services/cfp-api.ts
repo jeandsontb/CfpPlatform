@@ -31,3 +31,32 @@ export async function submitCfp(data: SpeakerDTO): Promise<SpeakerDTO> {
 
   return response.json();
 }
+
+export async function getCfps(): Promise<SpeakerDTO[]> {
+  const response = await fetch(CFP_API_ENDPOINT, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = `Erro ao carregar as palestras (Status ${response.status})`;
+    try {
+      const errorBody = await response.json();
+      if (errorBody) {
+        if (Array.isArray(errorBody.message)) {
+          errorMessage = errorBody.message.join(', ');
+        } else if (typeof errorBody.message === 'string') {
+          errorMessage = errorBody.message;
+        }
+      }
+    } catch {
+      // Fallback em caso de corpo de resposta não-JSON
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+

@@ -46,6 +46,22 @@ describe('CfpController', () => {
     });
   });
 
+  describe('findAll (GET)', () => {
+    it('should return all submissions from the service', () => {
+      const dto: CreateSpeakerDto = {
+        id: 'speaker-1',
+        name: 'Ada Lovelace',
+        email: 'ada@example.com',
+        talkTitle: 'First Computer Program',
+        isGDE: true,
+      };
+
+      controller.create(dto);
+      const result = controller.findAll();
+      expect(result).toContainEqual(dto);
+    });
+  });
+
   describe('ValidationPipe with CreateSpeakerDto', () => {
     const validPayload = {
       id: 'speaker-1',

@@ -25,6 +25,14 @@ describe('Page', () => {
     expect(screen.getByLabelText(/título da palestra/i)).toBeDefined();
   });
 
+  it('should render navigation link to dashboard', () => {
+    render(<Page />);
+
+    const dashboardLink = screen.getByRole('link', { name: /ver palestras submetidas/i });
+    expect(dashboardLink).toBeDefined();
+    expect(dashboardLink.getAttribute('href')).toBe('/dashboard');
+  });
+
   it('should not contain legacy Nx template elements', () => {
     render(<Page />);
 
@@ -33,3 +41,4 @@ describe('Page', () => {
     expect(screen.queryByText(/you're up and running/i)).toBeNull();
   });
 });
+
