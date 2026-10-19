@@ -1,96 +1,191 @@
-# CfpPlatform
+# 🎤 CFP Platform (Call for Papers)
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+<div align="center">
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+![Nx](https://img.shields.io/badge/Nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js%2016-black?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React%2019-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![NestJS](https://img.shields.io/badge/NestJS%2011-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript%205-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![OpenSpec](https://img.shields.io/badge/OpenSpec-Governed-brightgreen?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+<p align="center">
+  <strong>Plataforma moderna para submissão, gerenciamento e visualização de propostas de palestras técnicas (Call for Papers).</strong>
+</p>
 
-## Run tasks
+[Visão Geral](#-visão-geral) •
+[Funcionalidades](#-funcionalidades) •
+[Arquitetura](#-arquitetura) •
+[Como Executar](#-como-executar) •
+[Endpoints da API](#-endpoints-da-api) •
+[Testes](#-testes-e-qualidade) •
+[Governança OpenSpec](#-governança-com-openspec)
 
-To run tasks with Nx use:
+</div>
 
-```sh
-npx nx <target> <project-name>
+---
+
+## 📌 Visão Geral
+
+A **CFP Platform** é uma solução completa desenvolvida no formato de **Monorepo com [Nx](https://nx.dev)** para otimizar o fluxo de envio e avaliação de palestras para conferências e eventos tecnológicos.
+
+O projeto foi concebido seguindo as melhores práticas de engenharia de software contemporânea:
+- **Segurança de tipos de ponta a ponta (End-to-End Type Safety)** através de biblioteca compartilhada (`shared-types`).
+- **Validação estrita de contratos** tanto na camada de transporte HTTP (NestJS com `class-validator`) quanto no cliente (Next.js).
+- **Acessibilidade e Usabilidade (WAI-ARIA)** com design limpo, estados reativos, feedback assíncrono e suporte completo a leitores de tela.
+- **Governança orientada a especificações** com o ecossistema **OpenSpec**.
+
+---
+
+## ✨ Funcionalidades
+
+- **📝 Submissão Intuitiva de Palestras**:
+  - Formulário acessível com validação em tempo real.
+  - Bloqueio de submissão duplicada ou prematura durante requisições (`aria-busy`).
+  - Coleta detalhada: Nome do palestrante, e-mail, título da palestra e reconhecimento como Google Developer Expert (GDE).
+- **📊 Dashboard de Propostas**:
+  - Visualização de todas as palestras submetidas com listagem moderna em cards.
+  - Indicadores e métricas rápidas (total de palestras e contagem de palestrantes GDE).
+  - Badge exclusivo para Google Developer Experts.
+  - Tratamento elegante de estado vazio (*empty state*) e alertas de erro na comunicação com a API.
+- **🔄 Navegação Integrada**:
+  - Roteamento nativo e sem recarregamento entre o formulário (`/`) e o dashboard (`/dashboard`).
+
+---
+
+## 🏗 Arquitetura
+
+O monorepo é estruturado para garantir máxima modularidade, reuso e independência de compilação:
+
+```mermaid
+graph TD
+    subgraph Monorepo ["Nx Workspace (@cfp-platform/source)"]
+        ST["📦 shared-types<br/>(SpeakerDTO, Interfaces, Contratos)"]
+        API["🚀 api (NestJS 11)<br/>Porta: 3300"]
+        WEB["💻 frontend (Next.js 16 + React 19)<br/>Porta: 3000"]
+        E2E_API["🧪 api-e2e (Playwright)"]
+        E2E_WEB["🧪 frontend-e2e (Playwright)"]
+
+        API -->|importa tipos| ST
+        WEB -->|importa tipos| ST
+        WEB -->|consome HTTP REST| API
+        E2E_API -.-> API
+        E2E_WEB -.-> WEB
+    end
 ```
 
-For example:
+### Divisão de Projetos
 
-```sh
-npx nx build myproject
+| Projeto | Tecnologia | Responsabilidade |
+| :--- | :--- | :--- |
+| **`frontend`** | Next.js 16 (App Router), React 19, CSS Modules | Interface de usuário (Formulário CFP e Dashboard de palestras) |
+| **`api`** | NestJS 11, Express, Class-Validator | API RESTful com endpoints para criação e consulta de palestras |
+| **`shared-types`**| TypeScript Library | Contratos de dados compartilhados (`SpeakerDTO`, `CreateSpeakerDto`) |
+| **`api-e2e`** | Playwright / Node | Testes de integração e ponta a ponta da API |
+| **`frontend-e2e`**| Playwright | Testes automatizados de jornada do usuário no navegador |
+
+---
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+- **Node.js**: v20.x ou superior recomendado
+- **npm**: v10.x ou superior
+
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/jeandsontb/CfpPlatform.git
+cd CfpPlatform
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
+### 2. Instalar Dependências
+```bash
+npm install
 ```
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+### 3. Executar API e Frontend Concomitantemente
+Para subir todas as aplicações do monorepo simultaneamente em modo desenvolvimento com um único comando:
 
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
+```bash
+npm run monorepo
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+> **URLs de Acesso:**
+> - 🌐 **Frontend (Formulário):** [http://localhost:3000](http://localhost:3000)
+> - 📊 **Frontend (Dashboard):** [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+> - ⚙️ **API REST:** [http://localhost:3300/api](http://localhost:3300/api)
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Set up CI!
+## 📡 Endpoints da API
 
-### Step 1
+A API roda por padrão na porta `3300` com o prefixo global `/api`:
 
-To connect to Nx Cloud, run the following command:
+| Método | Rota | Descrição | Status de Sucesso |
+| :---: | :--- | :--- | :---: |
+| `GET` | `/api` | Mensagem de boas-vindas / Health Check | `200 OK` |
+| `GET` | `/api/cfp` ou `/api/speakers` | Retorna a lista de todas as propostas submetidas | `200 OK` |
+| `POST` | `/api/cfp` ou `/api/speakers` | Registra uma nova proposta de palestra | `201 Created` |
 
-```sh
-npx nx connect
+### Exemplo de Payload para Envio (`POST /api/cfp`):
+```json
+{
+  "id": "1",
+  "name": "Linus Torvalds",
+  "email": "linus@kernel.org",
+  "talkTitle": "Git e o Futuro dos Sistemas Operacionais",
+  "isGDE": false
+}
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+---
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🧪 Testes e Qualidade
 
-### Step 2
+O projeto conta com baterias de testes unitários e de integração configuradas com **Vitest** e **Playwright**:
 
-Use the following command to configure a CI workflow for your workspace:
+```bash
+# Executar testes unitários da API
+npx nx test api
 
-```sh
-npx nx g ci-workflow
+# Executar testes unitários do Frontend
+npx nx test frontend
+
+# Executar testes da biblioteca compartilhada
+npx nx test shared-types
+
+# Executar todos os testes do workspace
+npx nx run-many -t test
+
+# Executar linter em todos os projetos
+npx nx run-many -t lint
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Gráfico de Dependências Nx
+Visualize as relações e o grafo de dependências do monorepo interativamente:
+```bash
+npx nx graph
+```
 
-## Install Nx Console
+---
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## 📜 Governança com OpenSpec
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Este repositório utiliza o padrão **OpenSpec** para especificação de requisitos, gestão de mudanças incrementais e governança de arquitetura.
 
-## Useful links
+- As especificações vigentes encontram-se em [`openspec/specs/`](./openspec/specs/):
+  - [**cfp-submission**](./openspec/specs/cfp-submission/spec.md): Requisitos normativos de envio e validação de propostas.
+  - [**cfp-dashboard**](./openspec/specs/cfp-dashboard/spec.md): Requisitos normativos de consulta, listagem e navegação do dashboard.
+- Mudanças arquivadas com rastreabilidade completa em [`openspec/changes/archive/`](./openspec/changes/archive/).
 
-Learn more:
+Para validar a integridade das especificações locais:
+```bash
+openspec validate --specs
+```
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📄 Licença
+
+Este projeto é distribuído sob a licença **MIT**. Consulte o arquivo de licença para mais detalhes.
