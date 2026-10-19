@@ -1,7 +1,7 @@
 import type { SpeakerDTO } from '@cfp-platform/shared-types';
 
 export const CFP_API_ENDPOINT =
-  process.env.NEXT_PUBLIC_CFP_API_URL || '/api/cfp';
+  process.env.NEXT_PUBLIC_CFP_API_URL || 'http://localhost:3300/api/cfp';
 
 export async function submitCfp(data: SpeakerDTO): Promise<SpeakerDTO> {
   const response = await fetch(CFP_API_ENDPOINT, {
