@@ -1,5 +1,5 @@
 import styles from '../../page.module.css';
-import { EventForm } from '../../components/event-form';
+import { EventForm } from '../../components/event-form/event-form';
 import { Navbar } from '../../components/navbar';
 
 export const metadata = {
